@@ -1,0 +1,23 @@
+{
+  "name": "ts-mocha-go",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-mocha test/*.ts"
+  },
+  "keywords": [],
+  "author": "Dyllan Hope",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.9",
+    "mocha": "^6.2.1",
+    "ts-mocha": "^6.0.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "@types/pg": "^7.11.2",
+    "pg": "^7.12.1"
+  }
+}
