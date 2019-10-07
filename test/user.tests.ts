@@ -7,6 +7,7 @@ import MapUserGreetCounter from '../classes/MapUserGreetCounter';
 import Greeter from "../classes/Greeter";
 import GreetIn from "../interfaces/greetIn";
 import { Language } from "../classes/Greeter";
+import GreetInManager from "../classes/GreetInManager";
 
 
 describe('User Tests', () => {
@@ -65,8 +66,10 @@ describe('Testing Greeter class', () => {
         greetMap.set(Language.afr, new GreetInAfrikaans());
         greetMap.set(Language.eng, new GreetInEnglish());
 
+        const greetInManager = new GreetInManager(greetMap)
         const mapUserGreetCounter = new MapUserGreetCounter();
-        const greeter = new Greeter(greetMap, mapUserGreetCounter);
+        
+        const greeter = new Greeter(greetInManager, mapUserGreetCounter);
         // console.log(greeter.greet('Dyllan', Language.eng));
         assert.equal("Hello, Dyllan", greeter.greet("Dyllan", Language.eng));
     })

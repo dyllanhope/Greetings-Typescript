@@ -1,5 +1,6 @@
-import GreetIn from "../interfaces/greetIn";
+// import GreetIn from "../interfaces/greetIn";
 import UserGreetCounter from "../interfaces/userGreetCounter";
+import GreetTable from "../interfaces/GreetTable";
 
 export enum Language {
     eng,
@@ -8,21 +9,18 @@ export enum Language {
 }
 
 export default class Greeter {
-    private greetlanguages : Map<Language, GreetIn>
+    private greetTable : GreetTable;
     private userGreetCounter : UserGreetCounter;
 
-    constructor(greetLanguages: Map<Language, GreetIn>, userGreetCounter: UserGreetCounter){
-        this.greetlanguages = greetLanguages;
+    constructor(greetTable: GreetTable, userGreetCounter: UserGreetCounter){
+        this.greetTable = greetTable;
         this.userGreetCounter = userGreetCounter;
     }
 
     greet(name: string, chosenLanguage:Language){
-        let greetIn = this.greetlanguages.get(chosenLanguage);
+        let message = this.greetTable.greet(name, chosenLanguage);
         this.userGreetCounter.countGreet(name);
-        if(greetIn){
-            return greetIn.greet(name);
-        }
-        return "";
+        return message; 
     }
 
     public get greetCounter() : number {

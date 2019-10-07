@@ -13,6 +13,7 @@ export default class MapUserGreetCounter implements  UserGreetCounter{
     };
     public get greetCounter() : number {
         let count = 0;
+        
         for (const user of this.userMap){
             count++;
         }
