@@ -1,8 +1,8 @@
-import GreetTable from "../interfaces/GreetTable";
+import Greetable from "../interfaces/Greetable";
 import { Language } from "./Greeter";
 import GreetIn from "../interfaces/greetIn";
 
-export default class GreetInManager implements GreetTable{
+export default class GreetInManager implements Greetable{
 
     constructor(private greetLanguages: Map<Language, GreetIn>){
         this.greetLanguages = greetLanguages;

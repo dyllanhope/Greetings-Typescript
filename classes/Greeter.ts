@@ -1,33 +1,38 @@
 // import GreetIn from "../interfaces/greetIn";
 import UserGreetCounter from "../interfaces/userGreetCounter";
-import GreetTable from "../interfaces/GreetTable";
+import Greetable from "../interfaces/Greetable";
 
 export enum Language {
-    eng,
-    afr,
-    xho
+    ENGLISH,
+    AFRIKAANS,
+    ISIXHOSA
 }
 
 export default class Greeter {
-    private greetTable : GreetTable;
-    private userGreetCounter : UserGreetCounter;
+    private pool: any;
+    private greetable: Greetable;
+    private userGreetCounter: UserGreetCounter;
 
-    constructor(greetTable: GreetTable, userGreetCounter: UserGreetCounter){
-        this.greetTable = greetTable;
+    constructor(greetable: Greetable, userGreetCounter: UserGreetCounter, pool: any) {
+        this.greetable = greetable;
         this.userGreetCounter = userGreetCounter;
+        this.pool = pool;
     }
 
-    greet(name: string, chosenLanguage:Language){
-        let message = this.greetTable.greet(name, chosenLanguage);
+    async greet(name: string, chosenLanguage: Language) {
+        const message = this.greetable.greet(name, chosenLanguage);
         this.userGreetCounter.countGreet(name);
-        return message; 
+        await this.pool.query('INSERT INTO greeted (name, language) VALUES ($1, $2)', [name, Language[chosenLanguage]]);
+        return message;
     }
 
-    public get greetCounter() : number {
-        return this.userGreetCounter.greetCounter;
+    async greetCounter(): Promise<number> {
+        const results = await this.pool.query('SELECT COUNT(DISTINCT name) FROM greeted');
+        return results.rows[0].count;
     }
 
-    userGreetCount(firstName: string): number {
-        return this.userGreetCounter.userGreetCount(firstName);
+    async userGreetCount(firstName: string): Promise<number> {
+        const results = await this.pool.query('SELECT COUNT (*) FROM greeted WHERE name = $1', [firstName]);
+        return results.rows[0].count;
     }
 }
