@@ -108,5 +108,24 @@ describe('Unit tests for greetings', () => {
 
             assert.equal(await greetDB.greet('Dyllan', 'Afrikaans'), "Goeie dag, Dyllan");
         })
+        it('Should return a greet counter of 2 using database', async () => {
+            const greetMap = new Map<Language, GreetIn>();
+
+            greetMap.set(Language.AFRIKAANS, new GreetInAfrikaans());
+            greetMap.set(Language.ENGLISH, new GreetInEnglish());
+            greetMap.set(Language.ISIXHOSA, new GreetInXhosa());
+
+            const greetInManager = new GreetInManager(greetMap)
+            const mapUserGreetCounter = new MapUserGreetCounter();
+
+            const greeter = new Greeter(greetInManager, mapUserGreetCounter, pool);
+
+            await greeter.greet('Dyllan', Language.ENGLISH);
+            await greeter.greet('Dyllan', Language.ISIXHOSA);
+            await greeter.greet('Dyllan', Language.AFRIKAANS);
+            await greeter.greet('Marco', Language.ISIXHOSA);
+
+            assert.equal(await greeter.greetCounter(), 2);
+        })
     })
 });
