@@ -98,11 +98,13 @@ describe('Unit tests for greetings', () => {
             const results = await pool.query('SELECT name, language FROM greeted;');
             assert.deepEqual(results.rows[0], { name: 'Dyllan', language: 'ENGLISH' });
         })
-        it('Should return "Goeie dag Dyllan"', async () => {
+        it('Should return "Goeie dag Dyllan" using database', async () => {
             const greetDB = new GreetDBManager(pool);
             await greetDB.addLanguage('English', 'Hello');
             await greetDB.addLanguage('Afrikaans', 'Goeie dag');
             await greetDB.addLanguage('isiXhosa', 'Molo');
+            await greetDB.addLanguage('English', 'Goodbye');
+            await greetDB.addLanguage('Afrikaans', 'Hello');
 
             assert.equal(await greetDB.greet('Dyllan', 'Afrikaans'), "Goeie dag, Dyllan");
         })
